@@ -43,7 +43,7 @@ pipeline {
     }
     stage('setting the Kubernetes Cluster') {
       steps {
-        dir('terraform'){
+        dir('terraform_files'){
           sh 'terraform init'
           sh 'terraform validate'
           sh 'terraform apply --auto-approve'
