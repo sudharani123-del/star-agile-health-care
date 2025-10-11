@@ -54,8 +54,8 @@ pipeline {
     stage('deploy kubernetes'){
 steps{
   sh 'sudo chmod 600 ./terraform_files/sir.pem'    
-  sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem deployment.yml ubuntu@172.31.30.101:/home/ubuntu/'
-  sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem service.yml ubuntu@172.31.30.101:/home/ubuntu/'
+  sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem deployment.yml ubuntu@172.31.17.230:/home/ubuntu/'
+  sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem service.yml ubuntu@172.31.17.230:/home/ubuntu/'
 script{
   try{
   sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem ubuntu@172.31.30.101 kubectl apply -f .'
