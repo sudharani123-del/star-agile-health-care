@@ -58,10 +58,10 @@ steps{
   sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem service.yml ubuntu@172.31.17.230:/home/ubuntu/'
 script{
   try{
-  sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem ubuntu@172.31.30.101 kubectl apply -f .'
+  sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem ubuntu@172.31.17.230 kubectl apply -f .'
   }catch(error)
   {
-  sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem ubuntu@172.31.30.101 kubectl apply -f .'
+  sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/sir.pem ubuntu@172.31.17.230 kubectl apply -f .'
   }
 }
 }
