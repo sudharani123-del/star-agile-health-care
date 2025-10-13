@@ -56,5 +56,5 @@ pipeline {
      sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files
        
   }
-  }  
-  }
+  } */ 
+  
