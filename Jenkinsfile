@@ -50,5 +50,10 @@ pipeline {
         }
       }
     }
+   /* stage('Deploy to minikube') {
+     steps{
+     sh 'sudo chmod 600 ./terraform_files/newkey.pem'
+     sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files
+       
   }
-     
+  }   
