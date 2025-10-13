@@ -1,14 +1,11 @@
 pipeline {
   agent any
-     tools {
-       maven 'M2_HOME'
-           }
-     
+      
   stages {
     stage('Git Checkout') {
       steps {
         echo 'This stage is to clone the repo from github'
-        git branch: 'master', url: 'https://github.com/rohinicbabu/star-agile-health-care.git'
+        git branch: 'master', url: 'https://github.com/sudharani123-del/star-agile-health-care.git'
                         }
             }
     stage('Create Package') {
@@ -17,35 +14,29 @@ pipeline {
         sh 'mvn package'
                           }
             }
-    stage('Generate Test Report') {
-      steps {
-        echo 'This stage generate Test report using TestNG'
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/Healthcare/target/surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-                          }
-            }
+    
      stage('Create Docker Image') {
       steps {
         echo 'This stage will Create a Docker image'
-        sh 'docker build -t cbabu85/healthcare:1.0 .'
+        sh 'docker build -t sudharani000/healthcare:1.0 .'
                           }
             }
-     stage('Login to Dockerhub') {
-      steps {
-        echo 'This stage will loginto Dockerhub' 
-        withCredentials([usernamePassword(credentialsId: 'dockerloginnew', passwordVariable: 'dockerpass', usernameVariable: 'dockeruser')]) {
-        sh 'docker login -u ${dockeruser} -p ${dockerpass}'
-            }
-         }
-     }
+     stage('Docker-Login') {
+           steps {
+              withCredentials([usernamePassword(credentialsId: 'dockercreds', passwordVariable: 'dockerpassword', usernameVariable: 'dockerlogin')]) {
+               sh 'docker login -u ${dockerlogin} -p ${dockerpassword}'
+    }
+  }
+ }
     stage('Docker Push-Image') {
       steps {
         echo 'This stage will push my new image to the dockerhub'
-        sh 'docker push cbabu85/healthcare:1.0'
+        sh 'docker push sudharani000/healthcare:1.0'
             }
       }
     stage('AWS-Login') {
       steps {
-        withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'Awsaccess', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+        withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'awslogin', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
          }
       }
     }
@@ -61,7 +52,7 @@ pipeline {
         }
       }
     }
-    stage('Terraform destroy & apply for test workspace') {
+ /*   stage('Terraform destroy & apply for test workspace') {
       steps {
         sh 'terraform apply -auto-approve'
       }
@@ -111,7 +102,7 @@ pipeline {
         sh 'kubectl apply -f app-deploy.yml'
         sh 'kubectl get svc'
       }
-    }
+    } */
   }
 }
  
