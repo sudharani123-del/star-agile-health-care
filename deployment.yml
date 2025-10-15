@@ -18,5 +18,5 @@ spec:
          - name: medicure
            image: sudharani000/healthcare:1.0
            ports:
-             - containerPort: 8081
+             - containerPort: 8082
                name: http-web-app-01
