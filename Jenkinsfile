@@ -63,7 +63,7 @@ steps {
           
           minikube start
         '''
- stage('Install Medicure') {
+ stage('deploy kubernetes'){
     steps {
         sh '''
         if ! command -v medicure >/dev/null 2>&1; then
