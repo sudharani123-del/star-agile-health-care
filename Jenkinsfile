@@ -50,41 +50,23 @@ pipeline {
              }
       }
     }
-         stage('deploy kubernetes'){
-steps {
-        sh '''
-          sudo chmod 600 ./terraform_files/newkeypair.pem
-          
-          if ! command -v minikube >/dev/null 2>&1; then
-            echo "⚙️ Installing Minikube..."
-            curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-            sudo install minikube-linux-amd64 /usr/local/bin/minikube
-          fi
-          
-          minikube start
-        '''
- steps {
-        sh '''
-         sudo chmod 600 ./terraform_files/newkeypair.pem
-         
-        if ! command -v medicure >/dev/null 2>&1; then
-          echo "Medicure not found, installing..."
-          sudo apt-get update && sudo apt-get install -y medicure
-        else
-          echo "Medicure already installed."
-        fi
-        ''' 
-    }
- }
-    }
-   }
+     stage('deploy kubernetes'){
+steps{
+  sh 'sudo chmod 600 ./terraform_files/newkeypair.pem'    
+  sh 'minikube start'
+  sh 'sleep 30'
+  sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/newkeypair.pem deployment.yml ubuntu@172.31.18.245:/home/ubuntu/'
+  sh 'sudo scp -o StrictHostKeyChecking=no -i ./terraform_files/newkeypair.pem service.yml ubuntu@172.31.18.245:/home/ubuntu/'
+script{
+  try{
+  sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/newkeypair.pem ubuntu@172.31.18.245 kubectl apply -f .'
+  }catch(error)
+  {
+  sh 'ssh -o StrictHostKeyChecking=no -i ./terraform_files/newkeypair.pem ubuntu@172.31.18.245 kubectl apply -f .'
   }
-
-
-
-  
-  
-  
-
-    
-
+}
+}
+}
+  }
+}
+        
