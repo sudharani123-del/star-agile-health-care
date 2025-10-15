@@ -63,15 +63,18 @@ steps {
           
           minikube start
         '''
-  if ! command -v medicure >/dev/null 2>&1; then
-            echo "⚙️ Installing Medicure..."
-            curl -LO https://storage.googleapis.com/medicure/releases/latest/medicure-linux-amd64
-            sudo install medicure-linux-amd64 /usr/local/bin/medicure
-          fi
-          
-          medicure start
+ stage('Install Medicure') {
+    steps {
+        sh '''
+        if ! command -v medicure >/dev/null 2>&1; then
+          echo "Medicure not found, installing..."
+          sudo apt-get update && sudo apt-get install -y medicure
+        else
+          echo "Medicure already installed."
+        fi
         '''
-          
+    }
+ }
     }
    }
    }
