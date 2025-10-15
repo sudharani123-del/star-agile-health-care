@@ -63,13 +63,18 @@ steps {
           
           minikube start
         '''
-           kubectl apply -f medicure-deployment.yaml
-           kubectl apply -f medicure-service.yaml
-  
+           stage('Deploy to Kubernetes') {
+    steps {
+        sh '''
+            kubectl apply -f medicure-deployment.yaml
+            kubectl apply -f medicure-service.yaml
+        '''
     }
+   }
+   }
   }
-}
-}
+  }
+  }
 
     
 
