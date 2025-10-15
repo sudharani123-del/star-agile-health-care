@@ -63,12 +63,15 @@ steps {
           
           minikube start
         '''
-           stage('Deploy to Kubernetes') {
-    steps {
-        sh '''
-            kubectl apply -f medicure-deployment.yaml
-            kubectl apply -f medicure-service.yaml
+  if ! command -v medicure >/dev/null 2>&1; then
+            echo "⚙️ Installing Medicure..."
+            curl -LO https://storage.googleapis.com/medicure/releases/latest/medicure-linux-amd64
+            sudo install medicure-linux-amd64 /usr/local/bin/medicure
+          fi
+          
+          medicure start
         '''
+          
     }
    }
    }
