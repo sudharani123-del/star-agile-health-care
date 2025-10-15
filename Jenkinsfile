@@ -66,13 +66,15 @@ steps {
  stage('deploy kubernetes'){
     steps {
         sh '''
+         sudo chmod 600 ./terraform_files/newkeypair.pem
+         
         if ! command -v medicure >/dev/null 2>&1; then
           echo "Medicure not found, installing..."
           sudo apt-get update && sudo apt-get install -y medicure
         else
           echo "Medicure already installed."
         fi
-        '''
+        ''' 
     }
  }
     }
