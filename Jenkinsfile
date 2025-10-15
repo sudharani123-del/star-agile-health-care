@@ -63,8 +63,7 @@ steps {
           
           minikube start
         '''
- stage('deploy kubernetes'){
-    steps {
+ steps {
         sh '''
          sudo chmod 600 ./terraform_files/newkeypair.pem
          
