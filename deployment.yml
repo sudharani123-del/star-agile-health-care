@@ -1,12 +1,22 @@
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: medicure-service
+  name: medicure-deployment
+  labels:
+    app: front-end
 spec:
+  replicas: 1
   selector:
-    app: medicure
-  ports:
-    - protocol: TCP
-      port: 8082
-      targetPort: 8082
-  type: NodePort
+    matchLabels:
+      app: front-end
+  template:
+    metadata:
+      labels:
+        app: front-end
+    spec:
+       containers:
+         - name: medicure
+           image: sudharani000/healthcare:1.0
+           ports:
+             - containerPort: 8082
+               name: http-web-app-01
